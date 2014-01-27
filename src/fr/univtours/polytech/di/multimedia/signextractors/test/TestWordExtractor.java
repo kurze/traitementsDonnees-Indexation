@@ -17,9 +17,13 @@ public class TestWordExtractor {
 
     @Test
     public void test() {
-	String str = "Ceci est un test";
+	String str = "Ceci est un test de 39dé.";
 	WE.setContent(str);
-	Assert.assertEquals("ahah", "Ceci", WE.nextToken());
+	Assert.assertEquals("0", "Ceci", WE.nextToken());
+	Assert.assertEquals("1", "est", WE.nextToken());
+	Assert.assertEquals("2", "un", WE.nextToken());
+	Assert.assertEquals("3", "test", WE.nextToken());
+	Assert.assertEquals("4", "de", WE.nextToken());
+	Assert.assertEquals("5", "39dé", WE.nextToken());
     }
-
 }

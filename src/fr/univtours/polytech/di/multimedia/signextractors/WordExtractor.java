@@ -1,5 +1,6 @@
 package fr.univtours.polytech.di.multimedia.signextractors;
 
+import java.util.regex.*;
 
 /**
  * Classe permettant d'extraite des mots à partir d'une chaîne de caractères.
@@ -7,14 +8,20 @@ package fr.univtours.polytech.di.multimedia.signextractors;
  */
 public class WordExtractor implements SignExtractor {
 
+	private Pattern regexWord;
+	private Matcher matcher;
+
   /**
    * {@inheritDoc}
    * @see fr.univtours.polytech.di.multimedia.signextractors.SignExtractor#nextToken()
    */
   @Override
   public String nextToken() {
-    // TODO : A COMPLETER ICI
-    return null;
+	  if(matcher.find()){
+		  return matcher.group();
+	  }else{
+		  return "a";
+	  }
   }
 
   /**
@@ -23,6 +30,7 @@ public class WordExtractor implements SignExtractor {
    */
   @Override
   public void setContent(final String content) {
-    // TODO : A COMPLETER ICI
+	  regexWord = Pattern.compile("[^ .,;:!?]+");
+	  matcher = regexWord.matcher(content);
   }
 }
