@@ -20,7 +20,7 @@ public class WordExtractor implements SignExtractor {
 	  if(matcher.find()){
 		  return matcher.group();
 	  }else{
-		  return "";
+		  return null;
 	  }
   }
 

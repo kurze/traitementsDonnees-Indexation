@@ -38,9 +38,9 @@ public class NGramExtractor implements SignExtractor {
 			  return matcher.group();
 		  }else{
 			  word = WE.nextToken();
-			  if(word==""){
+			  if(word==null){
 				  dernierMot = true;
-				  return "";
+				  return null;
 			  }
 		  } 
 	  }

@@ -26,6 +26,7 @@ public class TestNGramExtractor {
 		Assert.assertEquals("4", "est", NE.nextToken());
 		Assert.assertEquals("5", "39d", NE.nextToken());
 		Assert.assertEquals("6", "9dé", NE.nextToken());
+		Assert.assertEquals("7", null, NE.nextToken());
     }
     
     @Test
@@ -41,6 +42,7 @@ public class TestNGramExtractor {
 		Assert.assertEquals("5", "tSup", NE.nextToken());
 		Assert.assertEquals("6", "Supe", NE.nextToken());
 		Assert.assertEquals("7", "uper", NE.nextToken());
+		Assert.assertEquals("8", null, NE.nextToken());
     }
     
     @Test
@@ -52,5 +54,6 @@ public class TestNGramExtractor {
 		Assert.assertEquals("1", "otSup", NE.nextToken());
 		Assert.assertEquals("2", "tSupe", NE.nextToken());
 		Assert.assertEquals("3", "Super", NE.nextToken());
+		Assert.assertEquals("4", null, NE.nextToken());
     }
 }

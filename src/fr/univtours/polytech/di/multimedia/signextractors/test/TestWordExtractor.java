@@ -25,5 +25,6 @@ public class TestWordExtractor {
 	Assert.assertEquals("3", "test", WE.nextToken());
 	Assert.assertEquals("4", "de", WE.nextToken());
 	Assert.assertEquals("5", "39dé", WE.nextToken());
+	Assert.assertEquals("6", null, WE.nextToken());
     }
 }
