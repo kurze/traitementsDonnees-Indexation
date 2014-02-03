@@ -12,8 +12,7 @@ public class CaseFilter implements Filter {
    */
   @Override
   public String filter(final String sign) {
-    // TODO: A COMPLETER ICI
-    return sign;
+    return sign.toLowerCase();
   }
 
 }
