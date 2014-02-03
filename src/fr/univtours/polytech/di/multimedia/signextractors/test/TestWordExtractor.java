@@ -16,7 +16,7 @@ public class TestWordExtractor {
     }
 
     @Test
-    public void test() {
+    public void test_WordExtractor() {
 	String str = "Ceci est un test de 39dé.";
 	WE.setContent(str);
 	Assert.assertEquals("0", "Ceci", WE.nextToken());
