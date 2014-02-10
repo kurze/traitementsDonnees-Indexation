@@ -270,11 +270,11 @@ public class Database {
 			  if(sign != null){
 				  break;
 			  }
-			  invertedIndex.setWordOccurrence(
-					  sign, 
-					  document, 
-					  invertedIndex.getWordOccurrences(sign, document)+1.0);
 		  }
+		  invertedIndex.setWordOccurrence(
+				  sign,
+				  document,
+				  invertedIndex.getWordOccurrences(sign, document)+1.0);
 	  }
   }
 
