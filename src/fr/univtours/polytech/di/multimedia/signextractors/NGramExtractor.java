@@ -20,6 +20,7 @@ public class NGramExtractor implements SignExtractor {
 		this.n = n;
 		WE = new WordExtractor();
 		word = "";
+		nGramm = Pattern.compile("[^ .,;:!?]{"+n+"}");
 	}
 
   /**
@@ -53,8 +54,9 @@ public class NGramExtractor implements SignExtractor {
    */
   @Override
   public void setContent(final String content) {
-	  nGramm = Pattern.compile("[^ .,;:!?]{"+n+"}");
 	  this.content = content;
 	  WE.setContent(content);
+	  matcher = null;
+	  word  = "";
   }
 }
