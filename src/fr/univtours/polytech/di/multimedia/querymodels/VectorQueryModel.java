@@ -39,10 +39,11 @@ public class VectorQueryModel extends QueryModel {
        
     int nbTotalDocs = getDatabase().getDocuments().size();
     
+    String filteredQuestion = getDatabase().filterSign(question);
     //extractions des mots de la question
     ArrayList<String> questionWords = new ArrayList<String>();
     WordExtractor questionWordExtractor = new WordExtractor();
-    questionWordExtractor.setContent(question);
+    questionWordExtractor.setContent(filteredQuestion);
     String word;
     while((word = questionWordExtractor.nextToken()) != null){
       questionWords.add(word);
