@@ -9,6 +9,7 @@ import fr.univtours.polytech.di.multimedia.database.DecreasingValuedObjectCompar
 import fr.univtours.polytech.di.multimedia.database.Document;
 import fr.univtours.polytech.di.multimedia.database.InvertedIndex;
 import fr.univtours.polytech.di.multimedia.database.ValuedObject;
+import fr.univtours.polytech.di.multimedia.signextractors.SignExtractor;
 import fr.univtours.polytech.di.multimedia.signextractors.WordExtractor;
 
 /**
@@ -41,10 +42,10 @@ public class VectorQueryModel extends QueryModel {
     
     //extractions des mots de la question
     ArrayList<String> questionWords = new ArrayList<String>();
-    WordExtractor questionWordExtractor = new WordExtractor();
-    questionWordExtractor.setContent(question);
+    SignExtractor extractor = getDatabase().getSignExtractor();
+    extractor.setContent(question);
     String word;
-    while((word = questionWordExtractor.nextToken()) != null){
+    while((word = extractor.nextToken()) != null){
       questionWords.add(word);
     }
     
