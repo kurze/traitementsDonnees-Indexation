@@ -56,4 +56,15 @@ public class TestNGramExtractor {
 		Assert.assertEquals("3", "Super", NE.nextToken());
 		Assert.assertEquals("4", null, NE.nextToken());
     }
+    
+    @Test
+    public void test_NGramExtractor_nPlusn() {
+    	NE = new NGramExtractor(3);
+		String str = "Ceci est un test de 39dé.";
+		NE.setContent(str);
+		Assert.assertEquals("0", "Cec", NE.nextToken());
+		str = "une autre chaine";
+		NE.setContent(str);
+		Assert.assertEquals("1", "une", NE.nextToken());
+    }
 }
