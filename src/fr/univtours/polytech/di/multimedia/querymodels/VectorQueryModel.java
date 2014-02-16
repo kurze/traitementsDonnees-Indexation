@@ -10,7 +10,6 @@ import fr.univtours.polytech.di.multimedia.database.Document;
 import fr.univtours.polytech.di.multimedia.database.InvertedIndex;
 import fr.univtours.polytech.di.multimedia.database.ValuedObject;
 import fr.univtours.polytech.di.multimedia.signextractors.SignExtractor;
-import fr.univtours.polytech.di.multimedia.signextractors.WordExtractor;
 
 /**
  * Classe implémentant le modèle d'interrogation vectoriel.
@@ -40,10 +39,11 @@ public class VectorQueryModel extends QueryModel {
        
     int nbTotalDocs = getDatabase().getDocuments().size();
     
+    String filteredQuestion = getDatabase().filterSign(question);
     //extractions des mots de la question
     ArrayList<String> questionWords = new ArrayList<String>();
     SignExtractor extractor = getDatabase().getSignExtractor();
-    extractor.setContent(question);
+    extractor.setContent(filteredQuestion);
     String word;
     while((word = extractor.nextToken()) != null){
       questionWords.add(word);

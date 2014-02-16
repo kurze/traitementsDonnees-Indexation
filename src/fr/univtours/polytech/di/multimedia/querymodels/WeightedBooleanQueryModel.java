@@ -44,6 +44,8 @@ public class WeightedBooleanQueryModel extends QueryModel {
   public List < ValuedObject > getAnswers(final String question) {
     final List < ValuedObject > results = new ArrayList < ValuedObject >();
 
+    
+    
     final Tree tree = ExpressionParser.parseQuery(question);
     List<Document> docs = getDatabase().getDocuments();
     for (Document document : docs) {
