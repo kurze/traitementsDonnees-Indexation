@@ -7,6 +7,7 @@ import fr.univtours.polytech.di.multimedia.database.Database;
 import fr.univtours.polytech.di.multimedia.database.Document;
 import fr.univtours.polytech.di.multimedia.database.InvertedIndex;
 import fr.univtours.polytech.di.multimedia.database.ValuedObject;
+import fr.univtours.polytech.di.multimedia.signextractors.SignExtractor;
 import fr.univtours.polytech.di.multimedia.signextractors.WordExtractor;
 
 /**
@@ -33,10 +34,11 @@ public class SimpleBooleanQueryModel extends QueryModel {
   public List < ValuedObject > getAnswers(final String question) {
     final List < ValuedObject > results = new ArrayList < ValuedObject >();
 
+    String filteredQuestion = getDatabase().filterSign(question);
     //extractions des mots de la question
     ArrayList<String> questionWords = new ArrayList<String>();
-    WordExtractor questionWordExtractor = new WordExtractor();
-    questionWordExtractor.setContent(question);
+    SignExtractor questionWordExtractor = getDatabase().getSignExtractor();
+    questionWordExtractor.setContent(filteredQuestion);
     String word;
     while((word = questionWordExtractor.nextToken()) != null){
 	questionWords.add(word);
