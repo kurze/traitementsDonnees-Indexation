@@ -2,10 +2,10 @@ package fr.univtours.polytech.di.multimedia.querymodels;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import fr.univtours.polytech.di.multimedia.database.Database;
+import fr.univtours.polytech.di.multimedia.database.DecreasingValuedObjectComparator;
 import fr.univtours.polytech.di.multimedia.database.Document;
 import fr.univtours.polytech.di.multimedia.database.InvertedIndex;
 import fr.univtours.polytech.di.multimedia.database.ValuedObject;
@@ -75,18 +75,8 @@ public class VectorQueryModel extends QueryModel {
 	}
     }
     
-    Collections.sort(results, new Comparator<ValuedObject>() {
-
-	@Override
-	public int compare(ValuedObject o1, ValuedObject o2) {
-	    if(o1.getScore() < o2.getScore())
-		return 1;
-	    if(o1.getScore() > o2.getScore())
-		return -1;
-	    return 0;
-	}
+    Collections.sort(results, new DecreasingValuedObjectComparator());
     
-    });
     return results;
   }
 }

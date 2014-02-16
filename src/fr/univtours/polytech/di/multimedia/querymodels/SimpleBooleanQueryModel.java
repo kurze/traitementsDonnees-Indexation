@@ -41,7 +41,7 @@ public class SimpleBooleanQueryModel extends QueryModel {
     while((word = questionWordExtractor.nextToken()) != null){
 	questionWords.add(word);
     }
-    
+
     InvertedIndex invertedIndex = getDatabase().getInvertedIndex();
     List<Document> allDocs = new ArrayList<Document>();
     for (String questionWord : questionWords) {
