@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
  */
 public class NGramExtractor implements SignExtractor {
 
+	/** pattern  pour le découpage */
 	private Pattern nGramm;
 	private Matcher matcher;
 	private WordExtractor WE;
@@ -26,23 +27,28 @@ public class NGramExtractor implements SignExtractor {
    */
   @Override
   public String nextToken() {
-	  
-	  boolean dernierMot=false;
-	  
-	  while(!dernierMot){
+
+	  while(true){// parcours tant que un ngram n'est pas extrait ou la fin atteint
+
+		  // scan du mot retourné par Word Extractor
 		  matcher = nGramm.matcher(word);
-		  if(matcher.find()){
+
+		  if(matcher.find()){ // si un ngram est trouvé
+
+			  // avance le parcours du mot en retirant un lettre au début
 			  word = word.substring(1);
+
 			  return matcher.group();
-		  }else{
+		  }else{ // si pas de ngram trouvé
+
+			  // demande du mot suivant dans la chaine initiale
 			  word = WE.nextToken();
-			  if(word==null){
-				  dernierMot = true;
+
+			  if(word==null){ // si fin atteint
 				  return null;
 			  }
 		  } 
 	  }
-	  return "";
   }
 
   /**

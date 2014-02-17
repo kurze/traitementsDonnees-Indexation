@@ -17,6 +17,7 @@ public class WordExtractor implements SignExtractor {
    */
   @Override
   public String nextToken() {
+	  // si un groupe est trouvé, on le renvoie, sinon on renvoie null
 	  if(matcher.find()){
 		  return matcher.group();
 	  }else{
@@ -30,7 +31,7 @@ public class WordExtractor implements SignExtractor {
    */
   @Override
   public void setContent(final String content) {
-	  regexWord = Pattern.compile("[^ .,;:!?]+");
+	  regexWord = Pattern.compile("[^ .,;:!?]+"); // liste des caractères pour séparer les tokens (ici des mots)
 	  matcher = regexWord.matcher(content);
   }
 }
