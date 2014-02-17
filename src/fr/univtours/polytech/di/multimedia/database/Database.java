@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -21,13 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import fr.univtours.polytech.di.multimedia.MainFrame;
-import fr.univtours.polytech.di.multimedia.filters.AccentFilter;
-import fr.univtours.polytech.di.multimedia.filters.CaseFilter;
 import fr.univtours.polytech.di.multimedia.filters.Filter;
-import fr.univtours.polytech.di.multimedia.filters.StemmingFilter;
-import fr.univtours.polytech.di.multimedia.filters.StopWordFilter;
 import fr.univtours.polytech.di.multimedia.signextractors.SignExtractor;
-import fr.univtours.polytech.di.multimedia.signextractors.WordExtractor;
 
 /**
  * Classe représentant la base de données des documents.
@@ -254,23 +248,14 @@ public class Database {
   private void indexDocument(final Document document) {
 	  signExtractor.setContent(document.getContent());
 
-	  List<Filter> filter = new Vector<Filter>();
-	  filter.add(new AccentFilter());
-	  filter.add(new CaseFilter());
-
-	  if(signExtractor.getClass()==WordExtractor.class){
-		  filter.add(new StopWordFilter(true, true));
-		  filter.add(new StemmingFilter());
-	  }
-
 	  String sign=null;
+	  // extraction de chaque token du document
 	  while((sign = signExtractor.nextToken()) != null){
-		  for (Filter f : filter) {
-			  sign = f.filter(sign);
-			  if(sign != null){
-				  break;
-			  }
-		  }
+
+		  // filtrage des signe
+		  sign = filterSign(sign);
+		  
+		  // enregistrement du mot
 		  invertedIndex.setWordOccurrence(
 				  sign,
 				  document,
