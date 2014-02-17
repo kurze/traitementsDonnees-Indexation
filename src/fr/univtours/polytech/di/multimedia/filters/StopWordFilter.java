@@ -111,12 +111,6 @@ public class StopWordFilter implements Filter {
 	    "passer",
 	    "autre"
     };
-    
-    // indique si les mots reçu ont été filtré par CaseFilter
-    private boolean caseFilterApplied;
-    
-    // indique si les mots reçu ont été filté par AccentFilter
-    private boolean accentFilterApplied;
   
 	/**
 	 * Le constructeur.
@@ -129,8 +123,19 @@ public class StopWordFilter implements Filter {
 	 */
 	public StopWordFilter(final boolean caseFilterApplied,
 			final boolean accentFilterApplied) {
-		this.caseFilterApplied = caseFilterApplied;
-		this.accentFilterApplied = accentFilterApplied;
+
+		CaseFilter caseFilter = new CaseFilter();
+		AccentFilter accentFilter = new AccentFilter();
+
+		for (int i=0; i< motsCommuns.length; i++) {
+			// On applique les filtres
+			if (caseFilterApplied) {
+				motsCommuns[i] = caseFilter.filter(motsCommuns[i]);
+			}
+			if (accentFilterApplied) {
+				motsCommuns[i] = accentFilter.filter(motsCommuns[i]);
+			}
+		}
 	}
 
 	/**
@@ -141,15 +146,6 @@ public class StopWordFilter implements Filter {
 	@Override
 	public String filter(final String sign) {
 		for (String motCommun : motsCommuns) {
-			// On applique les filtres
-			if (caseFilterApplied) {
-				CaseFilter caseFilter = new CaseFilter();
-				motCommun = caseFilter.filter(motCommun);
-			}
-			if (accentFilterApplied) {
-				AccentFilter accentFilter = new AccentFilter();
-				motCommun = accentFilter.filter(motCommun);
-			}
 			// Si le mot est dans la liste, on quitte la fonction
 			if (motCommun.equals(sign)) {
 				return "";
