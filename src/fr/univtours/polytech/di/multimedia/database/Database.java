@@ -252,10 +252,10 @@ public class Database {
 	  // extraction de chaque token du document
 	  while((sign = signExtractor.nextToken()) != null){
 
-		  // filtrage des signe
+		  // filtrage des signes
 		  sign = filterSign(sign);
 		  
-		  // enregistrement du mot
+		  // incrementation du nombre d'occurence du mot
 		  invertedIndex.setWordOccurrence(
 				  sign,
 				  document,
