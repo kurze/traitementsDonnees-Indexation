@@ -8,7 +8,8 @@ package fr.univtours.polytech.di.multimedia.filters;
  */
 public class StopWordFilter implements Filter {
 
-    String[] motsCommuns = {
+	/// Liste des mots à filtrer (retirer)
+    private String[] motsCommuns = {
 	    "le",
 	    "de",
 	    "un",
@@ -111,8 +112,11 @@ public class StopWordFilter implements Filter {
 	    "autre"
     };
     
-    boolean caseFilterApplied;
-    boolean accentFilterApplied;
+    // indique si les mots reçu ont été filtré par CaseFilter
+    private boolean caseFilterApplied;
+    
+    // indique si les mots reçu ont été filté par AccentFilter
+    private boolean accentFilterApplied;
   /**
    * Le constructeur.
    * @param caseFilterApplied indique si les signes ont été filtrés en minuscule
