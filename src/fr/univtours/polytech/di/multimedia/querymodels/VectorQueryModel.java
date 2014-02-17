@@ -63,7 +63,7 @@ public class VectorQueryModel extends QueryModel {
 	    double occurence = invertedIndex.getWordOccurrences(questionWord, document);
 	    if(useTFIDF) {
 		int nbDocs = invertedIndex.getAllDocuments(questionWord).size();
-		occurence = occurence * (nbTotalDocs / nbDocs); //TODO maybe we can use log() or log(1+) or even ln
+		occurence = occurence * (nbTotalDocs / nbDocs); 
 	    }
 	    somme += occurence;
 	    sommeCarre += (occurence * occurence);

@@ -74,7 +74,7 @@ public class WeightedBooleanQueryModel extends QueryModel {
   	    resultat = invertedIndex.getWordOccurrences(sign, doc);
   	    if(useTFIDF){
   		int nbDocs = invertedIndex.getAllDocuments(sign).size();
-		resultat = resultat * (nbTotalDocs / nbDocs); //TODO maybe we can use log() or log(1+) or even ln
+		resultat = resultat * (nbTotalDocs / nbDocs); 
 	    }
   	    break;
   	case BooleanExpressionParser.NOT:
