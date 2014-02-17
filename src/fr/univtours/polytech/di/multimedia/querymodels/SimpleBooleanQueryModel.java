@@ -8,7 +8,6 @@ import fr.univtours.polytech.di.multimedia.database.Document;
 import fr.univtours.polytech.di.multimedia.database.InvertedIndex;
 import fr.univtours.polytech.di.multimedia.database.ValuedObject;
 import fr.univtours.polytech.di.multimedia.signextractors.SignExtractor;
-import fr.univtours.polytech.di.multimedia.signextractors.WordExtractor;
 
 /**
  * Classe implémentant le modèle d'interrogation booléen simple.

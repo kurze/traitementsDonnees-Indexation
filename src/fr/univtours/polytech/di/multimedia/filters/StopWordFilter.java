@@ -131,22 +131,22 @@ public class StopWordFilter implements Filter {
    */
   @Override
   public String filter(final String sign) {
-      String newSign = sign;
-    if(caseFilterApplied){
-	CaseFilter caseFilter = new CaseFilter();
-	newSign = caseFilter.filter(sign);
-    }
-    if(accentFilterApplied) {
-	AccentFilter accentFilter = new AccentFilter();
-	newSign = accentFilter.filter(newSign);
-    }
-    for (String motCommun : motsCommuns) {
-	if(motCommun.contains(newSign)){
-	    newSign = null;
-	    break;
+      for (String motCommun : motsCommuns) {
+	//On applique les filtres
+	if(caseFilterApplied){
+		CaseFilter caseFilter = new CaseFilter();
+		motCommun = caseFilter.filter(motCommun);
+	    }
+	    if(accentFilterApplied) {
+		AccentFilter accentFilter = new AccentFilter();
+		motCommun = accentFilter.filter(motCommun);
+	    }
+	//Si le mot est dans la liste, on quitte la fonction
+	if(motCommun.equals(sign)){
+	    return "";
 	}
     }
-    return newSign;
+    return sign;
   }
 
 }
