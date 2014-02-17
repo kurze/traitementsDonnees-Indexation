@@ -117,40 +117,45 @@ public class StopWordFilter implements Filter {
     
     // indique si les mots reçu ont été filté par AccentFilter
     private boolean accentFilterApplied;
-  /**
-   * Le constructeur.
-   * @param caseFilterApplied indique si les signes ont été filtrés en minuscule
-   * @param accentFilterApplied indique si les signes ont été filtrés sans
-   *          accent et sans caractères spéciaux
-   */
-  public StopWordFilter(final boolean caseFilterApplied,
-      final boolean accentFilterApplied) {
-    this.caseFilterApplied = caseFilterApplied;
-    this.accentFilterApplied = accentFilterApplied;    
-  }
-
-  /**
-   * {@inheritDoc}
-   * @see fr.univtours.polytech.di.multimedia.filters.Filter#filter(java.lang.String)
-   */
-  @Override
-  public String filter(final String sign) {
-      for (String motCommun : motsCommuns) {
-	//On applique les filtres
-	if(caseFilterApplied){
-		CaseFilter caseFilter = new CaseFilter();
-		motCommun = caseFilter.filter(motCommun);
-	    }
-	    if(accentFilterApplied) {
-		AccentFilter accentFilter = new AccentFilter();
-		motCommun = accentFilter.filter(motCommun);
-	    }
-	//Si le mot est dans la liste, on quitte la fonction
-	if(motCommun.equals(sign)){
-	    return "";
+  
+	/**
+	 * Le constructeur.
+	 * 
+	 * @param caseFilterApplied
+	 *            indique si les signes ont été filtrés en minuscule
+	 * @param accentFilterApplied
+	 *            indique si les signes ont été filtrés sans accent et sans
+	 *            caractères spéciaux
+	 */
+	public StopWordFilter(final boolean caseFilterApplied,
+			final boolean accentFilterApplied) {
+		this.caseFilterApplied = caseFilterApplied;
+		this.accentFilterApplied = accentFilterApplied;
 	}
-    }
-    return sign;
-  }
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see fr.univtours.polytech.di.multimedia.filters.Filter#filter(java.lang.String)
+	 */
+	@Override
+	public String filter(final String sign) {
+		for (String motCommun : motsCommuns) {
+			// On applique les filtres
+			if (caseFilterApplied) {
+				CaseFilter caseFilter = new CaseFilter();
+				motCommun = caseFilter.filter(motCommun);
+			}
+			if (accentFilterApplied) {
+				AccentFilter accentFilter = new AccentFilter();
+				motCommun = accentFilter.filter(motCommun);
+			}
+			// Si le mot est dans la liste, on quitte la fonction
+			if (motCommun.equals(sign)) {
+				return "";
+			}
+		}
+		return sign;
+	}
 
 }

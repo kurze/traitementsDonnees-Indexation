@@ -25,61 +25,60 @@ public class SimpleBooleanQueryModel extends QueryModel {
     super(database);
   }
 
-  /**
-   * {@inheritDoc}
-   * @see fr.univtours.polytech.di.multimedia.querymodels.QueryModel#getAnswers(java.lang.String)
-   */
-  @Override
-  public List < ValuedObject > getAnswers(final String question) {
-    final List < ValuedObject > results = new ArrayList < ValuedObject >();
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see fr.univtours.polytech.di.multimedia.querymodels.QueryModel#getAnswers(java.lang.String)
+	 */
+	@Override
+	public List<ValuedObject> getAnswers(final String question) {
+		final List<ValuedObject> results = new ArrayList<ValuedObject>();
 
-    String filteredQuestion = getDatabase().filterSign(question);
-    //extractions des mots de la question
-    ArrayList<String> questionWords = new ArrayList<String>();
-    SignExtractor questionWordExtractor = getDatabase().getSignExtractor();
-    questionWordExtractor.setContent(filteredQuestion);
-    String word;
-    while((word = questionWordExtractor.nextToken()) != null){
-	questionWords.add(word);
-    }
+		String filteredQuestion = getDatabase().filterSign(question);
+		// extractions des mots de la question
+		ArrayList<String> questionWords = new ArrayList<String>();
+		SignExtractor questionWordExtractor = getDatabase().getSignExtractor();
+		questionWordExtractor.setContent(filteredQuestion);
+		String word;
+		while ((word = questionWordExtractor.nextToken()) != null) {
+			questionWords.add(word);
+		}
 
-    InvertedIndex invertedIndex = getDatabase().getInvertedIndex();
-    List<Document> allDocs = new ArrayList<Document>();
-    for (String questionWord : questionWords) {
-	List<Document> docs = invertedIndex.getAllDocuments(questionWord);
-	if(questionMethodAND) {
-	    if(allDocs.size() == 0) {
-		allDocs.addAll(docs);
-	    }
-	    else {
-		List<Document> toDelete = new ArrayList<Document>();
-		for (Document document : allDocs) {
-		    if(!docs.contains(document)) {
-			toDelete.add(document);
-		    }
+		InvertedIndex invertedIndex = getDatabase().getInvertedIndex();
+		List<Document> allDocs = new ArrayList<Document>();
+		for (String questionWord : questionWords) {
+			List<Document> docs = invertedIndex.getAllDocuments(questionWord);
+			if (questionMethodAND) {
+				if (allDocs.size() == 0) {
+					allDocs.addAll(docs);
+				} else {
+					List<Document> toDelete = new ArrayList<Document>();
+					for (Document document : allDocs) {
+						if (!docs.contains(document)) {
+							toDelete.add(document);
+						}
+					}
+					for (Document document : toDelete) {
+						allDocs.remove(document);
+					}
+				}
+			} else {
+
+				for (Document document : docs) {
+					if (!allDocs.contains(document)) {
+						results.add(new ValuedObject(document, 1.0));
+						allDocs.add(document);
+					}
+				}
+			}
 		}
-		for (Document document : toDelete) {
-		    allDocs.remove(document);
+		if (questionMethodAND) {
+			for (Document document : allDocs) {
+				results.add(new ValuedObject(document, 1));
+			}
 		}
-	    }
+
+		return results;
 	}
-	else {
-	    
-	    for (Document document : docs) {
-		if(!allDocs.contains(document)){
-		    results.add(new ValuedObject(document, 1.0));
-		    allDocs.add(document);
-		}
-	    }
-	}
-    }
-    if(questionMethodAND){
-	for (Document document : allDocs) {
-	    results.add(new ValuedObject(document, 1));
-	}
-    }
-    
-    return results;
-  }
 
 }

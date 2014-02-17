@@ -29,55 +29,68 @@ public class VectorQueryModel extends QueryModel {
     this.useTFIDF = useTFIDF;
   }
 
-  /**
-   * {@inheritDoc}
-   * @see fr.univtours.polytech.di.multimedia.querymodels.QueryModel#getAnswers(java.lang.String)
-   */
-  @Override
-  public List < ValuedObject > getAnswers(final String question) {
-    final List < ValuedObject > results = new ArrayList < ValuedObject >();
-       
-    int nbTotalDocs = getDatabase().getDocuments().size();
-    
-    String filteredQuestion = getDatabase().filterSign(question);
-    //extractions des mots de la question
-    ArrayList<String> questionWords = new ArrayList<String>();
-    SignExtractor extractor = getDatabase().getSignExtractor();
-    extractor.setContent(filteredQuestion);
-    String word;
-    while((word = extractor.nextToken()) != null){
-      questionWords.add(word);
-    }
-    
-    InvertedIndex invertedIndex = getDatabase().getInvertedIndex();
-    List<Document> docs = new ArrayList<Document>();
-    for (String questionWord : questionWords) {
-	docs.addAll(invertedIndex.getAllDocuments(questionWord));
-    }
-    
-    for (Document document : docs) {
-	double somme = 0;
-	double sommeCarre = 0;
-	double sommeWord = 0;
-	for (String questionWord : questionWords) {
-	    double occurence = invertedIndex.getWordOccurrences(questionWord, document);
-	    if(useTFIDF) {
-		int nbDocs = invertedIndex.getAllDocuments(questionWord).size();
-		occurence = occurence * (nbTotalDocs / nbDocs); 
-	    }
-	    somme += occurence;
-	    sommeCarre += (occurence * occurence);
-	    sommeWord++;
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see fr.univtours.polytech.di.multimedia.querymodels.QueryModel#getAnswers(java.lang.String)
+	 */
+	@Override
+	public List<ValuedObject> getAnswers(final String question) {
+		final List<ValuedObject> results = new ArrayList<ValuedObject>();
+
+		int nbTotalDocs = getDatabase().getDocuments().size();
+ 
+		// extractions des mots de la question
+		ArrayList<String> questionWords = new ArrayList<String>();
+		
+		// application de l'extracteur sur la question
+		SignExtractor extractor = getDatabase().getSignExtractor();
+		extractor.setContent(question);
+		String word;
+		while ((word = extractor.nextToken()) != null) {
+			//application des filtres sur chaque signe extrait 
+			word = getDatabase().filterSign(word);
+			questionWords.add(word);
+		}
+
+		// récupération de la listes des documents indexés
+		InvertedIndex invertedIndex = getDatabase().getInvertedIndex();
+		List<Document> docs = new ArrayList<Document>();
+		for (String questionWord : questionWords) {
+			docs.addAll(invertedIndex.getAllDocuments(questionWord));
+		}
+
+		// parcours de chaque document
+		for (Document document : docs) {
+			double somme = 0;
+			double sommeCarre = 0;
+			double sommeWord = 0;
+			// parcours de chaque signe de la question
+			for (String questionWord : questionWords) {
+				double occurence = invertedIndex.getWordOccurrences(
+						questionWord, document);
+				sommeWord++;
+				if(occurence != 0){
+					if (useTFIDF) {
+						int nbDocs = invertedIndex.getAllDocuments(questionWord)
+								.size();
+						occurence = occurence * (nbTotalDocs / nbDocs);
+					}
+					somme += occurence;
+					sommeCarre += (occurence * occurence);
+				}
+				
+				
+			}
+			if (somme != 0) {
+				double normes = Math.sqrt(sommeCarre) * Math.sqrt(sommeWord);
+				double cos = (normes == 0 ? 0 : somme / normes);
+				results.add(new ValuedObject(document, cos));
+			}
+		}
+
+		Collections.sort(results, new DecreasingValuedObjectComparator());
+
+		return results;
 	}
-	if(somme != 0) {
-	    double normes = Math.sqrt(sommeCarre) * Math.sqrt(sommeWord);
-	    double cos = (normes==0?0:somme/normes);
-	    results.add(new ValuedObject(document, cos));
-	}
-    }
-    
-    Collections.sort(results, new DecreasingValuedObjectComparator());
-    
-    return results;
-  }
 }
